@@ -3,26 +3,18 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/you/go-jobsity-flights/internal/providers"
-	"golang.org/x/sync/errgroup"
 	"sort"
 	"sync"
 	"time"
+
+	"github.com/you/go-jobsity-flights/internal/providers"
+	"golang.org/x/sync/errgroup"
 )
 
-type FlightOffer struct {
-	Provider    string    `json:"provider"`
-	Price       float64   `json:"price"`
-	Currency    string    `json:"currency"`
-	DurationMin int       `json:"duration_min"`
-	DepartAt    time.Time `json:"depart_at"`
-	ArriveAt    time.Time `json:"arrive_at"`
-}
-
 type SearchResult struct {
-	Cheapest FlightOffer   `json:"cheapest"`
-	Fastest  FlightOffer   `json:"fastest"`
-	All      []FlightOffer `json:"all"`
+	Cheapest providers.FlightOffer   `json:"cheapest"`
+	Fastest  providers.FlightOffer   `json:"fastest"`
+	All      []providers.FlightOffer `json:"all"`
 }
 
 type cacheEntry struct {
@@ -65,7 +57,7 @@ func (s *SearchService) Search(ctx context.Context, origin, dest, date string) (
 	defer cancel()
 
 	var mu sync.Mutex
-	var all []FlightOffer
+	var all []providers.FlightOffer
 	g, ctx := errgroup.WithContext(ctx)
 
 	for _, p := range s.providers {
@@ -75,9 +67,9 @@ func (s *SearchService) Search(ctx context.Context, origin, dest, date string) (
 			if err != nil {
 				return err
 			}
-			fos := make([]FlightOffer, 0, len(offers))
+			fos := make([]providers.FlightOffer, 0, len(offers))
 			for _, o := range offers {
-				fos = append(fos, FlightOffer{
+				fos = append(fos, providers.FlightOffer{
 					Provider:    o.Provider,
 					Price:       o.Price,
 					Currency:    o.Currency,
@@ -100,11 +92,11 @@ func (s *SearchService) Search(ctx context.Context, origin, dest, date string) (
 		return SearchResult{}, errors.New("no offers found")
 	}
 
-	sortedByPrice := append([]FlightOffer(nil), all...)
+	sortedByPrice := append([]providers.FlightOffer(nil), all...)
 	sort.Slice(sortedByPrice, func(i, j int) bool { return sortedByPrice[i].Price < sortedByPrice[j].Price })
 	cheapest := sortedByPrice[0]
 
-	sortedByDuration := append([]FlightOffer(nil), all...)
+	sortedByDuration := append([]providers.FlightOffer(nil), all...)
 	sort.Slice(sortedByDuration, func(i, j int) bool { return sortedByDuration[i].DurationMin < sortedByDuration[j].DurationMin })
 	fastest := sortedByDuration[0]
 

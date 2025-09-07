@@ -2,17 +2,18 @@ package main
 
 import (
 	"context"
-	"github.com/you/go-jobsity-flights/internal/auth"
-	"github.com/you/go-jobsity-flights/internal/config"
-	"github.com/you/go-jobsity-flights/internal/httpx"
-	"github.com/you/go-jobsity-flights/internal/providers"
-	"github.com/you/go-jobsity-flights/internal/service"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/you/go-jobsity-flights/internal/auth"
+	"github.com/you/go-jobsity-flights/internal/config"
+	"github.com/you/go-jobsity-flights/internal/httpx"
+	"github.com/you/go-jobsity-flights/internal/providers"
+	"github.com/you/go-jobsity-flights/internal/service"
 )
 
 func main() {
@@ -40,7 +41,7 @@ func main() {
 	protectedMux := http.NewServeMux()
 	protectedMux.HandleFunc("/flights/search", httpx.SearchHandler(searchSvc))
 	protectedMux.HandleFunc("/flights/history", httpx.HistoryHandler(histSvc))
-	protectedMux.HandleFunc("/sse/", httpx.SubscribeSSEHandler(searchSvc)) // /sse/AMS/BCN?date=2025-10-01
+	protectedMux.HandleFunc("/sse/", httpx.SubscribeSSEHandler(searchSvc))
 	protectedMux.HandleFunc("/ws/", httpx.SubscribeWSHandler(searchSvc))
 
 	// handler to control authenticated routes

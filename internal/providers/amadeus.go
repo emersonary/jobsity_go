@@ -40,11 +40,11 @@ func NewAmadeus(cfg *config.Config) *Amadeus {
 func (a *Amadeus) Name() string { return "amadeus" }
 
 func (a *Amadeus) token(ctx context.Context) (string, error) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-	if a.tok != "" && time.Now().Before(a.expires.Add(-30*time.Second)) {
-		return a.tok, nil
-	}
+	//a.mu.Lock()
+	//defer a.mu.Unlock()
+	//if a.tok != "" && time.Now().Before(a.expires.Add(-10*time.Second)) {
+	//	return a.tok, nil
+	//}
 	data := url.Values{}
 	data.Set("grant_type", "client_credentials")
 	data.Set("client_id", a.id)
@@ -95,7 +95,7 @@ func (a *Amadeus) Search(ctx context.Context, origin, destination, date string) 
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode >= 300 {
-		return nil, fmt.Errorf("amadeus search: %s", resp.Status)
+		return nil, fmt.Errorf("amadeus search: %s - %s - %s", resp.Status, u, tok)
 	}
 
 	var payload struct {

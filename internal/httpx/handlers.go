@@ -3,21 +3,23 @@ package httpx
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/websocket"
-	"github.com/you/go-jobsity-flights/internal/service"
 	"log"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/gorilla/websocket"
+	"github.com/you/go-jobsity-flights/internal/providers"
+	"github.com/you/go-jobsity-flights/internal/service"
 )
 
 type searchResponse struct {
-	Origin      string                `json:"origin"`
-	Destination string                `json:"destination"`
-	Date        string                `json:"date"`
-	Cheapest    service.FlightOffer   `json:"cheapest"`
-	Fastest     service.FlightOffer   `json:"fastest"`
-	Offers      []service.FlightOffer `json:"offers"`
+	Origin      string                  `json:"origin"`
+	Destination string                  `json:"destination"`
+	Date        string                  `json:"date"`
+	Cheapest    providers.FlightOffer   `json:"cheapest"`
+	Fastest     providers.FlightOffer   `json:"fastest"`
+	Offers      []providers.FlightOffer `json:"offers"`
 }
 
 func SearchHandler(svc *service.SearchService) http.HandlerFunc {

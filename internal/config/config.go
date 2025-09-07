@@ -37,9 +37,16 @@ func Load() *Config {
 	v.SetDefault("duffel_host", "https://api.duffel.com")
 	v.SetDefault("rapid_booking_host", "booking-com15.p.rapidapi.com")
 
-	v.SetConfigName("config")
-	v.AddConfigPath(".")
-	v.AddConfigPath("./config")
+	if path := os.Getenv("FLIGHTS_CONFIG"); path != "" {
+		v.SetConfigFile(path)
+	} else {
+		// Fallback to conventional locations for local dev
+		v.SetConfigName("config")
+		v.AddConfigPath(".")
+		v.AddConfigPath("./config")
+		v.AddConfigPath("/etc/flights") // add the container path
+	}
+
 	if err := v.ReadInConfig(); err != nil {
 		log.Printf("no config file found, using defaults + env vars: %v", err)
 	}

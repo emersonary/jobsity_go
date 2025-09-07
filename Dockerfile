@@ -40,6 +40,9 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy binary
 COPY --from=build /out/flights /usr/local/bin/flights
 
+# Copy config
+COPY --from=build /app/config.yaml /etc/flights/config.yaml
+
 # Minimal environment
 ENV SEARCH_TIMEOUT=4s \
     CACHE_TTL=30s \

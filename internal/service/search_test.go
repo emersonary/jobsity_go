@@ -13,7 +13,7 @@ import (
 	"github.com/you/go-jobsity-flights/internal/providers"
 )
 
-func TestSearchCheapestFastestAndCheapest(t *testing.T) {
+func TestSearchCheapestFastest(t *testing.T) {
 
 	cfg := &config.Config{
 		SearchTimeout: 5 * time.Second,

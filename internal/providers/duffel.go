@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/you/go-jobsity-flights/internal/config"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/you/go-jobsity-flights/internal/config"
 )
 
 type Duffel struct {
@@ -120,7 +121,12 @@ func (d *Duffel) Search(ctx context.Context, origin, destination, date string) (
 		dur := parseISODurationMinutes(seg0.Duration)
 		price, _ := strconv.ParseFloat(o.TotalAmount, 64)
 		currency := "EUR"
-		out = append(out, FlightOffer{Provider: d.Name(), Price: price, Currency: currency, DurationMin: dur, DepartAt: depart, ArriveAt: arrive})
+		out = append(out, FlightOffer{Provider: d.Name(),
+			Price:       price,
+			Currency:    currency,
+			DurationMin: dur,
+			DepartAt:    depart,
+			ArriveAt:    arrive})
 	}
 	return out, nil
 }
