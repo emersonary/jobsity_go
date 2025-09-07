@@ -1,0 +1,51 @@
+# Go build artifacts
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+
+# Go coverage & tooling
+coverage*
+*.cov
+*.coverprofile
+profile.cov
+
+
+# IDE/editor
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+
+# Modules cache (don’t ignore go.sum)
+/vendor/
+
+
+# Logs & temp
+*.log
+.tmp/
+
+
+# Local env & secrets
+.env
+.env.*
+*.local
+*.key
+*.pem
+*.pfx
+*.yaml
+*.yml
+
+
+# TLS certs if generated locally
+certs/
+
+
+# Docker
+*.tar
