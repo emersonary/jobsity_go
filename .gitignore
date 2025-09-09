@@ -45,7 +45,3 @@ profile.cov
 
 # TLS certs if generated locally
 certs/
-
-
-# Docker
-*.tar
